@@ -30,8 +30,45 @@ namespace WorkingWithIdentity.Controllers
             this.userManager = userManager;
            
         }
-        
+        public async Task<IActionResult> AddUser(string CourseId)
+        {
+            UserCourse userCourse = new UserCourse();
+            var userId = userManager.GetUserId(HttpContext.User);
+            userCourse.UserId = userId;
+            userCourse.CourseId = CourseId;
+            await _context.UserCourses.AddAsync(userCourse);
+            await _context.SaveChangesAsync();
+            return View("EnrollSuccessfully");
+        }
+        public async Task<IActionResult> ViewStudents(string CourseId)
+        {
+            List<MyUser> users = new List<MyUser>();
+            var userCourses = await _context.UserCourses
+                .Where(u => u.CourseId.Equals(CourseId)).ToListAsync();
+            foreach(var usercourse in userCourses)
+            {
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.Equals(usercourse.UserId));
+                users.Add(user as MyUser);
+            }
+            return View(users);
+        }
+        public async Task<IActionResult> ViewMyCourses()
+        {
+            List<Course> courses = new List<Course>();
+            var userId = userManager.GetUserId(HttpContext.User);
+            var userCourses = await _context.UserCourses.ToListAsync();
+            foreach (var usercourse in userCourses)
+            {
+                if(usercourse.UserId.Equals(userId))
+                {
+                    var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id.Equals(usercourse.CourseId));
+                    courses.Add(course);
+                    await _context.SaveChangesAsync();
+                }              
+            }
+            return View(courses);
 
+        }
         [Authorize]
         public async Task<IActionResult> CreateComment(string CourseName,string CommentContent)
         {
@@ -78,6 +115,8 @@ namespace WorkingWithIdentity.Controllers
         {
             return View();
         }
+       
+
         [HttpGet]
         public IActionResult GetName(string term)
         {

@@ -11,10 +11,8 @@ namespace WorkingWithIdentity.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public byte[] Image { get; set; }
-
-        public static explicit operator MyUser(Task<IdentityUser> v)
-        {
-            throw new NotImplementedException();
-        }
+        public List<UserCourse> UserCourses { get; set; }
+     
+       
     }
 }

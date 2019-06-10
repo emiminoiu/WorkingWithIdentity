@@ -12,7 +12,7 @@ namespace WorkingWithIdentity.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-        }
+            }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,6 +26,7 @@ namespace WorkingWithIdentity.Data
         public DbSet<Course> Courses { get; set; }
         public DbSet<CourseStudent> CourseStudents { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<WorkingWithIdentity.Models.StudentAddress> StudentAddress { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<StudentAddress> StudentAddress { get; set; }
     }
 }

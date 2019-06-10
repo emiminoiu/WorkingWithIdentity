@@ -24,6 +24,10 @@
     <Compile Remove="Data\Migrations\20190607081212_AddingComment.Designer.cs" />
     <Compile Remove="Data\Migrations\20190607081926_AddingComment.cs" />
     <Compile Remove="Data\Migrations\20190607081926_AddingComment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190610065900_AddingUsersToCourses.cs" />
+    <Compile Remove="Data\Migrations\20190610065900_AddingUsersToCourses.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190610072519_x.cs" />
+    <Compile Remove="Data\Migrations\20190610072519_x.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
