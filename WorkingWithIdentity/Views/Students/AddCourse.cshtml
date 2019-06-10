@@ -1,0 +1,140 @@
+﻿@model WorkingWithIdentity.Models.Student
+@*@model dynamic
+
+    <br>
+    <br>
+    <br>
+    <form id="AddCourses">
+        <div class="form-group">
+            <label>Student</label>
+            <div class="tt-container">
+                <input id="student" name="student" data-rule-validCustomer="true" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Course</label>
+            <div class="tt-container">
+                <input id="course" name="course" data-rule-atLeastOneMovie="true" type="text" value="" class="form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-4">
+                <ul id="courses" class="list-group"></ul>
+            </div>
+        </div>
+        <button class="btn btn-primary">Submit</button>
+    </form>
+    @section scripts
+        {
+
+        <script src="jquery-3.4.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+
+                var vm = {
+                    CoursesIds: []
+                };
+
+                var students = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    remote: {
+                        url: '/api/students?query=%QUERY',
+                        wildcard: '%QUERY'
+                    }
+                });
+
+                $('#student').typeahead({
+                    minLength: 3,
+                    highlight: true
+                }, {
+                        name: 'students',
+                        display: 'name',
+                        source: students
+                    }).on("typeahead:select", function (e, student) {
+                        vm.CoursesIds = student.id;
+                    });
+
+                var courses = new Bloodhound({
+                    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('CourseName'),
+                    queryTokenizer: Bloodhound.tokenizers.whitespace,
+                    remote: {
+                        url: '/api/courses?query=%QUERY',
+                        wildcard: '%QUERY'
+                    }
+                });
+
+                $('#course').typeahead({
+                    minLength: 3,
+                    highlight: true
+                }, {
+                        name: 'courses',
+                        display: 'CourseName',
+                        source: courses
+                    }).on("typeahead:select", function (e, course) {
+                        $("#courses").append("<li class='list-group-item'>" + course.CourseName + "</li>");
+
+                        $("#course").typeahead("val", "");
+
+                        vm.CoursesIds.push(course.id);
+                    });
+
+                $.validator.addMethod("validStudent", function () {
+                    return vm.CoursesId !== 0;
+                }, "Please select a valid student.");
+
+                $.validator.addMethod("atLeastOneCourse", function () {
+                    return vm.CoursesIds.length > 0;
+                }, "Please select at least one course.");
+
+                var validator = $("#AddCourses").validate({
+                    submitHandler: function () {
+                        $.ajax({
+                            url: "/api/AddCourses",
+                            method: "post",
+                            data: vm
+                        })
+                            .done(function () {
+                                toastr.success("Rentals successfully recorded.");
+
+                                $("#student").typeahead("val", "");
+                                $("#course").typeahead("val", "");
+                                $("#courses").empty();
+
+                                vm = { CoursesIds: [] };
+
+                                validator.resetForm();
+                            })
+                            .fail(function () {
+                                toastr.error("Something unexpected happened.");
+                            });
+
+                        return false;
+                    }
+                });
+            });
+        </script>
+    }*@
+
+
+
+<br />
+<br />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<div class="row">
+    <div class="col-md-4">
+        <div class="ui-widget">
+            <label>Autocomplete Example: </label>
+            <input asp-for="Name" id="LastName" name="LastName" class="form-control" />
+        </div>
+    </div>
+
+</div>
+<script>
+    $("#LastName").autocomplete({
+        source: '@Url.Action("GetName","Students")'
+    });
+</script>

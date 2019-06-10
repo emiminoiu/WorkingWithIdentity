@@ -6,9 +6,50 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20190527062607_AddingGradeName.cs" />
+    <Compile Remove="Data\Migrations\20190527062607_AddingGradeName.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190527064651_AddingGradeId.cs" />
+    <Compile Remove="Data\Migrations\20190527064651_AddingGradeId.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190528105732_AddingFields.cs" />
+    <Compile Remove="Data\Migrations\20190528105732_AddingFields.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190602153753_ImplementingRepositoryPattern.cs" />
+    <Compile Remove="Data\Migrations\20190602153753_ImplementingRepositoryPattern.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190602190054_ImplementingRepositoryPattern.cs" />
+    <Compile Remove="Data\Migrations\20190602190054_ImplementingRepositoryPattern.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190602190332_ImplementingRepositoryPattern.cs" />
+    <Compile Remove="Data\Migrations\20190602190332_ImplementingRepositoryPattern.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190602191431_ImplementingRepositoryPattern.cs" />
+    <Compile Remove="Data\Migrations\20190602191431_ImplementingRepositoryPattern.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190607081212_AddingComment.cs" />
+    <Compile Remove="Data\Migrations\20190607081212_AddingComment.Designer.cs" />
+    <Compile Remove="Data\Migrations\20190607081926_AddingComment.cs" />
+    <Compile Remove="Data\Migrations\20190607081926_AddingComment.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bootbox" Version="4.3.0" />
+    <PackageReference Include="Bootstrap-3-Typeahead" Version="4.0.2" />
+    <PackageReference Include="datatables.net" Version="1.10.18" />
+    <PackageReference Include="jQuery" Version="3.4.1" />
+    <PackageReference Include="jquery.datatables" Version="1.10.15" />
+    <PackageReference Include="jQuery.Validation" Version="1.17.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.7" PrivateAssets="All" />
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.1.0.49" />
+    <PackageReference Include="toastr" Version="2.1.1" />
+    <PackageReference Include="Twitter.Typeahead" Version="0.11.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="wwwroot\img\courses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Comments\ProfilePage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>
