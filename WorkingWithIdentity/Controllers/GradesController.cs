@@ -16,6 +16,7 @@ namespace WorkingWithIdentity.Controllers
 
         public GradesController(ApplicationDbContext context)
         {
+           
             _context = context;
         }
 

@@ -27,6 +27,19 @@ namespace WorkingWithIdentity.Controllers
             this.userManager = userManager;
          
         }
+        public async Task<IActionResult> ShowAllTeachers()
+        {
+            List<MyUser> teachers = new List<MyUser>();
+            var alLUsers = context.Users.ToList();
+            foreach (var user in alLUsers)
+            {
+               if(await userManager.IsInRoleAsync(user,"Teacher"))
+               {
+                    teachers.Add(user as MyUser);
+               }
+            }
+            return View(teachers);
+        }
         public IActionResult Index()
         {
             return View();
@@ -39,6 +52,21 @@ namespace WorkingWithIdentity.Controllers
 
             return View();
         }
+        public async Task<IActionResult> ViewTeacherProfile(string CourseId)
+        {
+            var course = await context.Courses.FirstOrDefaultAsync(c => c.Id.Equals(CourseId));
+            if (course.AuthorName != null)
+            {
+                var user = await userManager.FindByNameAsync(course.AuthorName) as MyUser;
+                if (user == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View("ProfilePage", user);
+            }
+            return RedirectToAction("Index");
+        }
+
         [Authorize]
         public async Task<IActionResult> ProfilePage()
         {
@@ -75,6 +103,8 @@ namespace WorkingWithIdentity.Controllers
         
             return RedirectToAction("Index", "Students");
         }
+
+        
         public IActionResult ShowInvoice()
         {
             var invoices = context.Invoices.Where(x => x.ClientId.Equals(userManager.GetUserId(HttpContext.User)));

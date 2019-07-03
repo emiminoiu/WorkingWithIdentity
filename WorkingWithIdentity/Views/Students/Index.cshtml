@@ -1,28 +1,29 @@
 ﻿@model IEnumerable<WorkingWithIdentity.Models.Student>
 <h2>Index</h2>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.GradeName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Image)
-                </th> 
-                <th>
-                   Student Address
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GradeName)
+            </th>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
@@ -32,109 +33,17 @@
                 </td>
                 @if (item.Image != null)
                 {
-                    <td>
-                        <img class="img-thumbnail" style="height:50px" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Image)" />
-                    </td>
-                }
-                @if (item.Image == null)
-                {
-                    <td>
-                        No Image
-                    </td>
-                }
+
                 <td>
-                    <a  style="color:blue;font-size:large"  href="SeeAddress?StudentId=@item.Id">See Address</a>
+                    <img class="img-thumbnail" style="height:50px" src="data:image/jpeg;base64,@Convert.ToBase64String(item.Image)" />
                 </td>
+                }
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
-    }
-        </tbody>
-    </table>
-@*<br />
-<br />
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
-<table id="grades" class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Student Name</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <th>Image</th>
-
-        </tr>
-
-    </thead>
-    <tbody></tbody>
+        }
+    </tbody>
 </table>
-
-@section scripts
-    {
-    <script type="text/javascript" src="~/js/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="~/js/DataTables/jquery.dataTables.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-
-    <script>
-
-        $(document).ready(function () {
-            var table = $("#grades").DataTable({
-                ajax: {
-                    url: "/api/students",
-                    dataSrc: ""
-                },
-                columns: [
-                    {
-                        data: "name",
-                        render: function (data, type, student) {
-                            return "<a href='students/details/" + student.id + "'>" + student.name + "</a>";
-                        }
-                    },
-                    {
-                        data: "Edit",
-                        render: function (data, type, student) {
-                            return "<a href='/students/edit/" + student.id + "'>" + student.name + "</a>";
-                        }
-                    },
-
-                    {
-                        data: "id",
-                        render: function (data) {
-                            return "<button class='btn-link js-delete' data-grade-id=" + data + ">Delete</button>";
-                        }
-                    },
-                    {
-                        data: "Image",
-                        render: function (data) {
-                            return "<img class="img-responsive full-width" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.I)" />";
-                        }
-                    }
-                ]
-            });
-
-
-            $("#grades").on("click", ".js-delete", function () {
-                var button = $(this);
-
-                confirm("Are you sure you want to delete this movie?", function (result) {
-
-                    if (result) {
-                        $.ajax({
-                            url: "students/delete/" + button.attr("data-grade-id"),
-                            success: function () {
-                                table.row(button.parents("tr")).remove().draw();
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-}*@

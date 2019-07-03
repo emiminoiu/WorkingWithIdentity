@@ -3,70 +3,118 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<body>
 <h2>Index</h2>
-<br />
+    <br />
+    <br />
+    <div class="xy">
 
+        <div class="border border-dark d-flex justify-content-end" style="height:50px">
+            <a href="Courses/AddComment"><button type="button" id="commentButton" class="btn btn-primary">Add a Comment</button></a>
+            <a href="Courses/ViewMyCourses"><button type="button" class="btn btn-success">View My Courses</button></a>
+        </div>
 
-<a href="Courses/AddComment"><button type="button" class="btn btn-primary">Add a Comment</button></a>
-<a href="Courses/ViewMyCourses"><button type="button" class="btn btn-success">View My Courses</button></a>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
+    </div>
 
-            <th>
-                @Html.DisplayNameFor(model => model.CourseName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                Enroll
-            </th>
-            <th>
-                Comments
-            </th>
-            <th>
-                View Enrolled Students
-            </th>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead class="x">
+            <tr>
 
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    Enroll
+                </th>
+                <th>
+                    Comments
+                </th>
+                <th>
+                    View Enrolled Students
+                </th>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.CourseName)
-            </td>
-            <td>
-                <img class="img-thumbnail" style="height:50px" src="~/img/courses/@item.Image" />
-            </td>
-            @if (User.Identity.IsAuthenticated)
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
             {
+            <tr>
+
                 <td>
-                    <a href="Courses/AddUser?CourseId=@item.Id"><button type="button" class="btn btn-primary">Enroll in this course</button></a>
+                    @Html.DisplayFor(modelItem => item.CourseName) - Score-@item.RatingScore
                 </td>
-            }
-            <td>
-                <a href="Comments/ViewComments?CourseId=@item.Id"><button type="button" class="btn btn-primary">View Comments</button></a>
-            </td>
-            <td>
-                <a href="Courses/ViewStudents?CourseId=@item.Id"><button type="button" class="btn btn-primary">View Enrolled Students</button></a>
-            </td>
-            <td>
-                @if (User.IsInRole("Admin"))
+                <td>
+                    <img class="img-thumbnail" style="height:50px" src="~/img/courses/@item.Image" />
+                </td>
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <td>
+                        <a href="Courses/AddUser?CourseId=@item.Id"><button type="button" class="btn btn-primary">Enroll in this course</button></a>
+                    </td>
                 }
-                |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <td>
+                    <a href="Comments/ViewComments?CourseId=@item.Id"><button type="button" class="btn btn-primary">View Comments</button></a>
+                </td>
+                <td>
+                    <a href="Courses/ViewStudents?CourseId=@item.Id"><button type="button" class="btn btn-primary">View Enrolled Students</button></a>
+                </td>
+                <td>
+                    <a href="Home/ViewTeacherProfile?CourseId=@item.Id"><button type="button" class="btn btn-primary">View Teacher Profile</button></a>
+                </td>
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    }
+                    |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+@*<!DOCTYPE html>
+<html>
+<head>
+    <title>Todo List</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/todos.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,500' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+    <script type="text/javascript" src="assets/js/lib/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <h1>To-Do List <i class="fa fa-plus"></i></h1>
+        <input type="text" placeholder="Add New Todo">
+        <ul>
+            <li><span><i class="fa fa-trash"></i></span> Go To Potions Class</li>
+            <li><span><i class="fa fa-trash"></i></span> Buy New Robes</li>
+            <li><span><i class="fa fa-trash"></i></span> Visit Hagrid</li>
+        </ul>
+    </div>
+    <script type="text/javascript" src="assets/js/todos.js"></script>
+</body>
+</html>*@
+</body>
+<style>
+    body {
+        background-color: white;
+    }
+    /*.container {
+        text-align: center;
+    }*/
+   /*p{
+       text-align:center;
+   }*/
+
+    .xy {
+        text-align: center;
+    }
+</style>

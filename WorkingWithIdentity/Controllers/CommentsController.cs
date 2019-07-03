@@ -49,19 +49,20 @@ namespace WorkingWithIdentity.Controllers
             IdentityUser user = await userManager.FindByIdAsync(theComment.UserId);
             model.Username = user.UserName;
             model.Comment = theComment.CommentContent;
+           
+            foreach (var searchedModel in Global_models)
+            {
+                if ((searchedModel.Username.Equals(model.Username)) && (searchedModel.Comment.Equals(model.Comment))) 
+                {
+                    Global_models.Remove(searchedModel);
+                    break;
+                }
+            }
             _context.Remove(theComment);
             await _context.SaveChangesAsync();
-            //foreach(var searchedModel in Global_models)
-            //{
-            //    if ((searchedModel.Username.Equals(model.Username)) && (searchedModel.Comment.Equals(model.Comment)));
-            //    {
-            //        Global_models.Remove(searchedModel);
-            //        break;
-            //    }
-            //}
-           
             return View("ViewComments", Global_models);
         }
+
         public async Task<IActionResult> GoToProfilePage(string Username)
         {
             var user = await userManager.FindByNameAsync(Username);
@@ -71,6 +72,7 @@ namespace WorkingWithIdentity.Controllers
             }
             return View("ProfilePage", user);
         }
+
         // GET: Comments
         public async Task<IActionResult> Index()
         {

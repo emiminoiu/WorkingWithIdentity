@@ -74,7 +74,7 @@ namespace WorkingWithIdentity.Controllers
                 var student = await _context.Students
                     .FirstOrDefaultAsync(s => s.Name.Equals(studentAddress.StudentName));
                 theStudentAddress.StudentId = student.Id;
-                theStudentAddress.Address = (studentAddress.Address);
+                theStudentAddress.Address = studentAddress.Address;
                 _context.Add(theStudentAddress);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

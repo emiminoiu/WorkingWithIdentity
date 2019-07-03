@@ -210,13 +210,30 @@ namespace WorkingWithIdentity.Data.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AuthorName");
+
                     b.Property<string>("CourseName");
 
                     b.Property<string>("Image");
 
+                    b.Property<decimal>("RatingScore");
+
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
+                });
+
+            modelBuilder.Entity("WorkingWithIdentity.Models.CourseReview", b =>
+                {
+                    b.Property<string>("CourseId");
+
+                    b.Property<string>("ReviewId");
+
+                    b.HasKey("CourseId", "ReviewId");
+
+                    b.HasIndex("ReviewId");
+
+                    b.ToTable("CourseReviews");
                 });
 
             modelBuilder.Entity("WorkingWithIdentity.Models.CourseStudent", b =>
@@ -260,6 +277,22 @@ namespace WorkingWithIdentity.Data.Migrations
                     b.HasIndex("ClientId");
 
                     b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("WorkingWithIdentity.Models.Review", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("ReviewScore");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("WorkingWithIdentity.Models.Student", b =>
@@ -389,6 +422,19 @@ namespace WorkingWithIdentity.Data.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("WorkingWithIdentity.Models.CourseReview", b =>
+                {
+                    b.HasOne("WorkingWithIdentity.Models.Course", "Course")
+                        .WithMany("CourseReviews")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WorkingWithIdentity.Models.Review", "Review")
+                        .WithMany("CourseReviews")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("WorkingWithIdentity.Models.CourseStudent", b =>
                 {
                     b.HasOne("WorkingWithIdentity.Models.Course", "Course")
@@ -407,6 +453,13 @@ namespace WorkingWithIdentity.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
+                });
+
+            modelBuilder.Entity("WorkingWithIdentity.Models.Review", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WorkingWithIdentity.Models.Student", b =>

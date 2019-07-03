@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WorkingWithIdentity.Models.MyUser>
+<body class="border-dark">
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Email
+                </th>
+               
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                  
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+<style>
+    body {
+        background-color: orange;
+    }
+</style>

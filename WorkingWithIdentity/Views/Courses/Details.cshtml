@@ -22,6 +22,16 @@
         <dd>
             @Html.DisplayFor(model => model.Image)
         </dd>
+        @if (Model.AuthorName != null)
+        {
+        <dt>
+            @Html.DisplayNameFor(model => model.AuthorName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AuthorName)
+        </dd>
+
+        }
     </dl>
 </div>
 <div>

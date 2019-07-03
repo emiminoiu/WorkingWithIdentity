@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WorkingWithIdentity.Data;
 using WorkingWithIdentity.Models;
+using WorkingWithIdentity.ViewModels;
 
 namespace WorkingWithIdentity.Controllers
 {
@@ -61,8 +62,9 @@ namespace WorkingWithIdentity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,GradeName")] Student student,IFormFile Image)
+        public async Task<IActionResult> Create([Bind("Id,Name,GradeName")] StudentGradeViewModel model,IFormFile Image)
         {
+            Student student = new Student();
             if (ModelState.IsValid)
             {
                 if (Image != null)
@@ -70,16 +72,21 @@ namespace WorkingWithIdentity.Controllers
                     using (var ms = new MemoryStream())
                     {
                         Image.CopyTo(ms);
-                        student.Image = ms.ToArray();
+                        model.Image = ms.ToArray();
                     }
                 }
-                var grade = await _context.Grades.FirstOrDefaultAsync(g => g.GradeName.Equals(student.GradeName));
+               
+                student.Image = model.Image;
+                student.Name = model.Name;
+               
+                var grade = await _context.Grades.FirstOrDefaultAsync(g => g.GradeName.Equals(model.GradeName));
+                student.GradeName = grade.GradeName;
                 student.GradeId = grade.Id;
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(student);
+            return View(model);
         }
 
         // GET: Students/Edit/5
