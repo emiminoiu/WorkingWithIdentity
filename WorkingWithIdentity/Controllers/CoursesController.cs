@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using WorkingWithIdentity.ViewModels;
 
 namespace WorkingWithIdentity.Controllers
 {
@@ -24,7 +25,7 @@ namespace WorkingWithIdentity.Controllers
         private readonly IHostingEnvironment _appEnvironment;
         public static CourseReview global_courseReview;
         public static Review global_Review;
-
+        public static BudgetViewModel model = new BudgetViewModel();
         public CoursesController(ApplicationDbContext context, IHostingEnvironment _appEnvironment,
             UserManager<IdentityUser> userManager)
         {
@@ -34,11 +35,13 @@ namespace WorkingWithIdentity.Controllers
 
         }
 
+
         public async Task<IActionResult> AddUser(string CourseId)
         {
             int ok = 1;
             UserCourse userCourse = new UserCourse();
             var userId = userManager.GetUserId(HttpContext.User);
+            var authenticatedUser = await userManager.FindByIdAsync(userId) as MyUser;
             userCourse.UserId = userId;
             userCourse.CourseId = CourseId;
             var userCourses = await _context.UserCourses
@@ -53,6 +56,9 @@ namespace WorkingWithIdentity.Controllers
             }
             if (ok == 1)
             {
+                authenticatedUser.NoOfCourses++;
+                var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id.Equals(CourseId));
+                authenticatedUser.Budget -= course.Price;
                 await _context.UserCourses.AddAsync(userCourse);
                 await _context.SaveChangesAsync();
             }
@@ -97,20 +103,57 @@ namespace WorkingWithIdentity.Controllers
         public async Task<IActionResult> DeleteReview(string CourseId)
         {
             var reviews = await _context.Reviews.ToListAsync();
-
+            decimal sum = 0;
+            int count = 0;
+            decimal rating = 0;
+            int ok = 0;
             foreach (var review in reviews)
             {
                 if (review.UserId.Equals(userManager.GetUserId(HttpContext.User)))
                 {
                     var course_review = await _context.CourseReviews
-                        .FirstOrDefaultAsync(c => c.CourseId.Equals(CourseId) && c.ReviewId.Equals(review.Id));             
+                        .FirstOrDefaultAsync(c => c.CourseId.Equals(CourseId) && c.ReviewId.Equals(review.Id));
                     if (course_review != null)
                     {
                         _context.Reviews.Remove(review);
                         _context.CourseReviews.Remove(course_review);
+                        ok = 1;
                     }
-                    await _context.SaveChangesAsync();
-                    break;
+                    if (ok == 1)
+                    {
+                        await _context.SaveChangesAsync();
+                        var courses = await _context.Courses.ToListAsync();
+
+                        foreach (var course in courses)
+                        {
+
+                            var course_reviews = _context.CourseReviews.Where(c => c.CourseId.Equals(course.Id));
+                            foreach (var review1 in reviews)
+                            {
+                                foreach (var course_review1 in course_reviews)
+                                {
+                                    if (course_review1.ReviewId.Equals(review1.Id))
+                                    {
+                                        sum += review1.ReviewScore;
+                                        count++;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (count > 0)
+                            {
+                                rating = sum / count;
+                                course.RatingScore = rating;
+                                await _context.SaveChangesAsync();
+                                rating = 0;
+                                count = 0;
+                                sum = 0;
+                                break;
+                            }
+
+
+                        }
+                    }
                 }
             }
             return RedirectToAction("Index");
@@ -142,6 +185,7 @@ namespace WorkingWithIdentity.Controllers
         {
             List<Course> courses = new List<Course>();
             var userId = userManager.GetUserId(HttpContext.User);
+            var user = await userManager.FindByIdAsync(userId) as MyUser;
             var userCourses = await _context.UserCourses
               .Where(u => u.CourseId.Equals(CourseId)).ToListAsync();
             foreach (var usercourse in userCourses)
@@ -149,6 +193,9 @@ namespace WorkingWithIdentity.Controllers
                 if (usercourse.UserId.Equals(userId) && (usercourse.CourseId.Equals(CourseId)))
                 {
                     _context.Remove(usercourse);
+                    var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id.Equals(CourseId));
+                    user.NoOfCourses--;
+                    user.Budget += course.Price;
                     await _context.SaveChangesAsync();
                     break;
                 }
@@ -225,6 +272,8 @@ namespace WorkingWithIdentity.Controllers
                     course.RatingScore = rating;
                     await _context.SaveChangesAsync();
                     rating = 0;
+                    count = 0;
+                    sum = 0;
                 }
             }
             return View(await _context.Courses.ToListAsync());

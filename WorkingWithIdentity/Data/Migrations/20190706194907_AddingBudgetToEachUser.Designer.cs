@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkingWithIdentity.Data;
 
 namespace WorkingWithIdentity.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190706194907_AddingBudgetToEachUser")]
+    partial class AddingBudgetToEachUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -215,8 +217,6 @@ namespace WorkingWithIdentity.Data.Migrations
                     b.Property<string>("CourseName");
 
                     b.Property<string>("Image");
-
-                    b.Property<decimal>("Price");
 
                     b.Property<decimal>("RatingScore");
 

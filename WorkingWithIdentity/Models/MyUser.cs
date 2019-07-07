@@ -12,6 +12,8 @@ namespace WorkingWithIdentity.Models
         public string LastName { get; set; }
         public byte[] Image { get; set; }
         public List<UserCourse> UserCourses { get; set; }
+        public int NoOfCourses { get; set; }
+        public decimal Budget { get; set; }
      
        
     }

@@ -30,21 +30,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="CreateInvoice">Create Invoice</a></li>
-                    <li><a asp-area="" asp-controller="Students" asp-action="Index">Students</a></li>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="CreateInvoice">Create Invoice</a></li>*@
+                    @*<li><a asp-area="" asp-controller="Students" asp-action="Index">Students</a></li>
                     <li><a asp-area="" asp-controller="Grades" asp-action="Index">Grades</a></li>
-                    <li><a asp-area="" asp-controller="Invoices" asp-action="Index">Invoices</a></li>
-                    <li><a asp-area="" asp-controller="Students" asp-action="AddCourse">AddCourse</a></li>             
+                    <li><a asp-area="" asp-controller="Invoices" asp-action="Index">Invoices</a></li>*@
+                    <li><a asp-area="" asp-controller="Students" asp-action="AddCourse">AddCourse</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="ProfilePage">ProfilePage</a></li>
                     <li><a asp-area="" asp-controller="Courses" asp-action="Index">Courses</a></li>
-                    <li><a asp-area="" asp-controller="StudentAddresses" asp-action="Index">StudentAddresses</a></li>
-                    @if(@User.IsInRole("Admin"))
+                    @*<li><a asp-area="" asp-controller="StudentAddresses" asp-action="Index">StudentAddresses</a></li>*@
+                    @if (@User.IsInRole("Admin"))
                     {
-                    <li><a asp-area="" asp-controller="Home" asp-action="ShowAllTeachers">Teachers</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="ShowAllTeachers">Teachers</a></li>
                     }
-                    
+
                 </ul>
+             
                 <partial name="_LoginPartial" />
             </div>
         </div>
