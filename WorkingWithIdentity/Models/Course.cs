@@ -17,5 +17,7 @@ namespace WorkingWithIdentity.Models
         public string Image { get; set; }
         public List<UserCourse> UserCourses { get; set; }
         public decimal Price { get; set; }
+        public string Genre { get; set; }
+    
     }
 }

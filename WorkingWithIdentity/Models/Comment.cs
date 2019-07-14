@@ -13,5 +13,6 @@ namespace WorkingWithIdentity.Models
         public string CommentContent { get; set; }
         public Course Course { get; set; }
         public IdentityUser User { get; set; }
+        public string TimeStamp { get; set; }
     }
 }

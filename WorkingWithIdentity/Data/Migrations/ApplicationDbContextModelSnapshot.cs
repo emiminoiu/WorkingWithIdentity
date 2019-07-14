@@ -194,6 +194,8 @@ namespace WorkingWithIdentity.Data.Migrations
 
                     b.Property<string>("CourseId");
 
+                    b.Property<string>("TimeStamp");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
@@ -213,6 +215,8 @@ namespace WorkingWithIdentity.Data.Migrations
                     b.Property<string>("AuthorName");
 
                     b.Property<string>("CourseName");
+
+                    b.Property<string>("Genre");
 
                     b.Property<string>("Image");
 

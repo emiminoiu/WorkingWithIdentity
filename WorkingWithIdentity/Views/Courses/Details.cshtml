@@ -1,4 +1,4 @@
-﻿@model WorkingWithIdentity.Models.Course
+﻿@model WorkingWithIdentity.ViewModels.CoursesViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -24,14 +24,32 @@
         </dd>
         @if (Model.AuthorName != null)
         {
-        <dt>
-            @Html.DisplayNameFor(model => model.AuthorName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AuthorName)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.AuthorName)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.AuthorName)
+            </dd>
 
         }
+        <dt>
+            @Html.DisplayNameFor(model => model.NoOfStudents)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NoOfStudents)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RatingScore)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RatingScore)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
     </dl>
 </div>
 <div>

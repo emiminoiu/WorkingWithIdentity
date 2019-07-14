@@ -85,7 +85,7 @@
 
                             {
                             <tr id="Delete">
-                                <td class="column1">  @Html.DisplayFor(modelItem => item.CourseName)</td>
+                                <td class="column1"><a href="Details?id=@item.Id">  @Html.DisplayFor(modelItem => item.CourseName)</a></td>
                                 <td class="column2"> <img class="img-thumbnail" style="height:50px" src="~/img/courses/@item.Image" /></td>
                                 <td class="column3">  <a href="DeleteCourse?CourseId=@item.Id"><button type="button" class="btn btn-primary">Delete Course</button></a></td>
                                 <td class="column4" id="Review">  <a href="AddReview?CourseId=@item.Id"><button type="button" class="btn btn-primary">Rate this Course</button></a></td>

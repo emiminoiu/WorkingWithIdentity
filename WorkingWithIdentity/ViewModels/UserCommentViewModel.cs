@@ -10,6 +10,7 @@ namespace WorkingWithIdentity.ViewModels
 
         public string Username { get; set; }
         public string Comment { get; set; }
-        
+        public string CourseId { get; set; }
+        public string TimeStamp { get; set; }
     }
 }

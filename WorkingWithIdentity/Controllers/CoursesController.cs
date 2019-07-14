@@ -160,6 +160,13 @@ namespace WorkingWithIdentity.Controllers
 
         }
 
+        public async Task<IActionResult> GetCoursesByGenre(string Genre)
+        {
+            var courses =  _context.Courses.Where(c => c.Genre.Equals(Genre));
+            return View("Index", courses);
+
+        }
+
         public async Task<IActionResult> FinishReview(decimal ReviewScore)
         {
             global_Review.ReviewScore = ReviewScore;
@@ -286,6 +293,8 @@ namespace WorkingWithIdentity.Controllers
         // GET: Courses/Details/5
         public async Task<IActionResult> Details(string id)
         {
+
+            CoursesViewModel coursesViewModel = new CoursesViewModel();
             if (id == null)
             {
                 return NotFound();
@@ -293,12 +302,24 @@ namespace WorkingWithIdentity.Controllers
 
             var course = await _context.Courses
                 .FirstOrDefaultAsync(m => m.Id.Equals(id));
+            if (course.AuthorName != null)
+            {
+                coursesViewModel.AuthorName = course.AuthorName;
+            }
+            coursesViewModel.CourseName = course.CourseName;
+            coursesViewModel.Genre = course.Genre;
+            coursesViewModel.Image = course.Image;
+            coursesViewModel.Price = course.Price;
+            coursesViewModel.RatingScore = course.RatingScore;
+            var userCourses = _context.UserCourses.Where(u => u.CourseId.Equals(course.Id));
+            int noOfStudents = userCourses.Count();
+            coursesViewModel.NoOfStudents = noOfStudents;
             if (course == null)
             {
                 return NotFound();
             }
 
-            return View(course);
+            return View(coursesViewModel);
         }
 
         // GET: Courses/Create

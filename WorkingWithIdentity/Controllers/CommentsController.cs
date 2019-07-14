@@ -33,33 +33,44 @@ namespace WorkingWithIdentity.Controllers
             comment.CourseId = course.Id;
             comment.CommentContent = CommentContent;
             comment.UserId = userManager.GetUserId(HttpContext.User);
+            comment.TimeStamp = DateTime.Now.ToString();
             IdentityUser user = await userManager.FindByIdAsync(comment.UserId);
             model.Username = user.UserName;
             model.Comment = comment.CommentContent;
+            model.CourseId = Global_CourseId;
+            model.TimeStamp = DateTime.Now.ToString();
             Global_models.Add(model);
-            await _context.AddAsync(comment);
+            await _context.Comments.AddAsync(comment);
             await _context.SaveChangesAsync();
             return View("ViewComments",Global_models);
 
         }
-        public async Task<IActionResult> DeleteComment(string Username,string Comment)
+        public async Task<IActionResult> DeleteComment(string Username, string Comment, string CourseId, string TimeStamp)
         {
             UserCommentViewModel model = new UserCommentViewModel();
-            var theComment = await _context.Comments.FirstOrDefaultAsync(c => c.CommentContent.Equals(Comment));
-            IdentityUser user = await userManager.FindByIdAsync(theComment.UserId);
-            model.Username = user.UserName;
-            model.Comment = theComment.CommentContent;
-           
-            foreach (var searchedModel in Global_models)
+            var userId = userManager.GetUserId(HttpContext.User);
+            IdentityUser user = await userManager.FindByIdAsync(userId);
+            model.Username = Username;
+            model.Comment = Comment;
+            model.CourseId = CourseId;
+            model.TimeStamp = TimeStamp;
+         
+            if (user != null && user.UserName.Equals(Username))
             {
-                if ((searchedModel.Username.Equals(model.Username)) && (searchedModel.Comment.Equals(model.Comment))) 
+                var theComment = await _context.Comments
+                    .FirstOrDefaultAsync(c => c.CourseId.Equals(CourseId) && c.UserId.Equals(user.Id) && c.TimeStamp.Equals(TimeStamp));
+                foreach (var searchedModel in Global_models)
                 {
-                    Global_models.Remove(searchedModel);
-                    break;
+                    if ((searchedModel.Username.Equals(model.Username)) && (searchedModel.Comment.Equals(model.Comment) && searchedModel.TimeStamp.Equals(TimeStamp)))
+                    {
+                        Global_models.Remove(searchedModel);
+                        break;
+                    }
                 }
+                _context.Comments.Remove(theComment);
             }
-            _context.Remove(theComment);
             await _context.SaveChangesAsync();
+
             return View("ViewComments", Global_models);
         }
 
@@ -114,8 +125,9 @@ namespace WorkingWithIdentity.Controllers
                     var user = await userManager.FindByIdAsync(comment.UserId);
                     model.Username = user.UserName.ToString();
                     model.Comment = comment.CommentContent.ToString();
+                    model.CourseId = CourseId;
+                    model.TimeStamp = comment.TimeStamp;
                     models.Add(model);
-                   
                 }
                 Global_models = models;
                 return View(models);
